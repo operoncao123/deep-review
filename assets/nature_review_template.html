@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<!--
+Deep Review — Nature-Style Report Template
+==========================================
+Derived from nature-protocols-report/assets/template.html — same design system, review-specific body.
+Review additions: .toc, prose citation links (direct PubMed/DOI, external), .fig frame, .pill.pc,
+vertical-spine timeline (ol.tl), content-aware colgroups, palette-panel CSS variables.
+Copy this file, replace {{PLACEHOLDER}} content, keep CSS unchanged.
+The 11-section skeleton below mirrors references/section_guide.md.
+-->
+<html lang="{{zh-CN | en}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{Review Title}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbfbfa;
+    --ink:#212730;
+    --ink-soft:#4d5560;
+    --ink-faint:#7d8590;
+    --rule:#3C5488;
+    --rule-thin:#a9b4cc;
+    --rule-hair:#dde2ec;
+    --accent:#3C5488;
+    --accent-deep:#2e4069;
+    --bg-soft:#f3f5f9;
+    --bg-deg:#e9edf4;
+    --bg-shared:#edf6f5;
+    --sea:#00A087;
+    --sand:#B08C3E;
+    --sage:#6E9464;
+    --slate:#7E6BA8;
+    --bg-lcd:#f5efe2;
+    --pill-deg-bg:#e9edf4;--pill-deg-fg:#2e4069;--pill-deg-bd:#a9b4cc;
+    --pill-a-bg:#e3f3f0;--pill-a-fg:#00755f;--pill-a-bd:#a4d8cf;
+    --pill-lcd-bg:#f5efe2;--pill-lcd-fg:#8a6d2e;--pill-lcd-bd:#d9c9a4;
+    --pill-ko-bg:#eae6f2;--pill-ko-fg:#5f5080;--pill-ko-bd:#c5bcdc;
+    --pill-pc-bg:#e8f0e6;--pill-pc-fg:#53714b;--pill-pc-bd:#bcd2b4;
+    --v1-stroke:#3C5488;--v1-fill:#dde2ec;
+    --v2-stroke:#D2703F;--v2-fill:#f3ddd1;
+    --fig-bar:#b3bdd2;--fig-bar-partial:#e9edf4;--fig-line:#00A087;--fig-band:#eef1f6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  ::selection{background:var(--bg-deg)}
+  :lang(zh-CN) .subtitle,:lang(zh-CN) h3.sub,:lang(zh-CN) table.bk td .sub2{font-style:normal}
+  .figblock{break-inside:avoid;page-break-inside:avoid;margin:20px 0}
+  .figblock .caption{margin:10px 0 0}
+  .fig .caption{margin:0 0 12px}
+  @page{margin:12mm}
+  @media print{.page{padding:20px 26px 40px}
+  table.bk{font-size:12.5px}
+  .figblock,.fig,.pathway,.venn-wrap,.table-wrap,ol.tl li{break-inside:avoid;page-break-inside:avoid}}
+  body{
+    font-family:"Source Serif 4","Noto Serif SC","Songti SC",Georgia,serif;
+    background:var(--paper);
+    color:var(--ink);
+    font-size:15.5px;
+    line-height:1.72;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .page{max-width:880px;margin:0 auto;padding:72px 56px 96px}
+
+  /* Running header */
+  .runhead{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:"IBM Plex Sans",sans-serif;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint);
+    padding-bottom:14px;border-bottom:1px solid var(--rule-hair);
+    margin-bottom:56px;
+  }
+  .runhead>span:first-child::before{content:"";display:inline-block;width:7px;height:7px;
+    background:var(--accent);border-radius:1.5px;margin-right:9px;vertical-align:1px}
+  .print-btn{background:none;border:none;color:var(--ink-faint);cursor:pointer;
+    font-family:inherit;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:0}
+  .print-btn:hover{color:var(--accent)}
+
+  /* Title block */
+  .titleblock{border-bottom:2px solid var(--ink);padding-bottom:34px;margin-bottom:34px}
+  .doctype{font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:16px}
+  h1.title{font-family:"Source Serif 4",serif;font-weight:600;font-size:32px;
+    line-height:1.2;letter-spacing:-.008em;margin-bottom:16px;font-variation-settings:"opsz" 36}
+  .subtitle{font-family:"Source Serif 4",serif;font-size:17.5px;font-weight:400;font-style:italic;
+    color:var(--ink-soft);line-height:1.5;margin-bottom:26px}
+  .meta-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+    font-family:"IBM Plex Sans",sans-serif;font-size:11px;
+    border-top:1px solid var(--rule-hair);padding-top:16px}
+  .meta-grid>div{border-left:1px solid var(--rule-hair);padding-left:14px}
+  .meta-grid>div:first-child{border-left:none;padding-left:0}
+  .meta-grid .k{color:var(--ink-faint);text-transform:uppercase;letter-spacing:.09em;font-size:9px;margin-bottom:4px}
+  .meta-grid .v{color:var(--ink);font-weight:500}
+
+  /* REVIEW ADDITION: table of contents */
+  .toc{background:var(--bg-soft);border-left:2px solid var(--rule-thin);padding:22px 28px;margin:0 0 48px}
+  .toc .h{font-family:"IBM Plex Sans",sans-serif;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+  .toc ol{list-style:none;columns:2;column-gap:40px;margin:0;padding:0}
+  .toc li{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;margin-bottom:6px;break-inside:avoid}
+  .toc a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent}
+  .toc a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  .toc .tn{color:var(--accent);font-weight:600;margin-right:8px}
+
+  /* Abstract */
+  .abstract{background:var(--bg-soft);border-left:3px solid var(--accent);
+    padding:26px 30px;margin:8px 0 48px}
+  .abstract .label{font-family:"IBM Plex Sans",sans-serif;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:8px}
+  .abstract p{font-size:15px;line-height:1.66;color:var(--ink-soft);margin:0}
+  .abstract p + p{margin-top:10px}
+
+  /* REVIEW ADDITION: in-text citation links — direct PubMed/DOI, external */
+  p a, li a, .abstract p a, .keypoint p a, ol.gated a, .def a, ol.tl p a{
+    color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-thin);
+    padding-bottom:1px;white-space:nowrap}
+  p a:hover, li a:hover, ol.tl p a:hover{color:var(--ink);border-bottom-color:var(--accent)}
+
+  /* Sections */
+  section{margin-top:52px;scroll-margin-top:20px}
+  h2.sec{font-family:"Source Serif 4",serif;font-weight:600;font-size:21px;
+    letter-spacing:-.003em;margin-bottom:8px;margin-top:8px;display:flex;align-items:baseline;gap:12px}
+  h2.sec .n{font-family:"IBM Plex Sans",sans-serif;font-weight:500;font-size:13.5px;color:var(--accent);min-width:24px}
+  .sec-rule{border:0;border-top:1.5px solid var(--rule);margin:0 0 20px}
+  h3.sub{font-family:"Source Serif 4",serif;font-weight:600;font-size:16px;margin:26px 0 8px;color:var(--ink)}
+  h3.sub .n{font-family:"IBM Plex Sans",sans-serif;font-weight:500;font-size:12px;color:var(--ink-faint);margin-right:8px}
+
+  p{margin-bottom:12px}
+  p:last-child{margin-bottom:0}
+  strong{font-weight:600;color:var(--ink)}
+  em{font-style:italic}
+  .mono{font-family:"IBM Plex Mono",monospace;font-size:.88em;overflow-wrap:anywhere}
+  .accent{color:var(--accent)}
+
+  /* Tables (booktabs) — generous inter-column air: 16px right padding per cell */
+  .table-wrap{margin:22px 0;overflow-x:auto}
+  .caption{font-family:"IBM Plex Sans",sans-serif;font-size:12.5px;font-weight:500;
+    color:var(--ink);margin-bottom:9px;line-height:1.4}
+  .caption .tag{color:var(--accent);font-weight:600;margin-right:6px}
+  .caption .note{display:block;font-weight:400;color:var(--ink-faint);font-size:11.5px;margin-top:3px;line-height:1.5}
+
+  table.bk{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13.5px;line-height:1.55}
+  /* Chrome never breaks at "/" under overflow-wrap:normal — slash compounds
+     overprint the next column when narrow. break-word is the safety valve:
+     it only fires when a token genuinely doesn't fit the (floored) column. */
+  table.bk th{overflow-wrap:normal;word-break:normal}
+  table.bk td{overflow-wrap:break-word;word-break:normal}
+  table.bk thead th{font-family:"IBM Plex Sans",sans-serif;font-weight:500;font-size:11px;
+    text-transform:uppercase;letter-spacing:.06em;color:var(--ink);text-align:left;
+    padding:9px 16px 9px 0;border-top:1.5px solid var(--rule);border-bottom:1px solid var(--rule);vertical-align:middle}
+  table.bk thead th:last-child{padding-right:0}
+  table.bk tbody td{padding:11px 16px 11px 0;border-bottom:1px solid var(--rule-hair);color:var(--ink-soft);vertical-align:middle}
+  table.bk tbody td:last-child{padding-right:0}
+  table.bk tbody tr:last-child td{border-bottom:1.5px solid var(--rule)}
+  table.bk tbody:first-child tr:first-child td{border-top:1.5px solid var(--rule)}
+  @media screen{table.bk tbody tr:hover td{background:var(--bg-soft)}}
+  table.bk td.lbl{font-family:"IBM Plex Sans",sans-serif;font-weight:500;color:var(--ink);font-size:12.5px}
+  table.bk td .sub2{display:block;font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;color:var(--ink-faint);font-weight:400;margin-top:1px}
+  table.bk tr.divider td{border-top:1px solid var(--rule);padding-top:12px}
+  table.interp th,table.interp td{text-align:left}
+  table.interp td.center{text-align:center;vertical-align:middle}
+
+  /* Reference links: accent-colored, hairline underline */
+  table.bk a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-thin);padding-bottom:1px;white-space:nowrap}
+  table.bk a:hover{color:var(--ink);border-bottom-color:var(--accent)}
+
+
+  /* Pill tags */
+  .pill{display:inline-block;font-family:"IBM Plex Sans",sans-serif;font-size:10px;font-weight:600;
+    letter-spacing:.04em;padding:2px 9px;border-radius:3px;vertical-align:middle}
+  .pill.lcd{background:var(--pill-lcd-bg);color:var(--pill-lcd-fg);border:1px solid var(--pill-lcd-bd)}
+  .pill.deg{background:var(--pill-deg-bg);color:var(--pill-deg-fg);border:1px solid var(--pill-deg-bd)}
+  .pill.a{background:var(--pill-a-bg);color:var(--pill-a-fg);border:1px solid var(--pill-a-bd)}
+  .pill.ko{background:var(--pill-ko-bg);color:var(--pill-ko-fg);border:1px solid var(--pill-ko-bd)}
+  /* REVIEW ADDITION: preclinical/discovery pill */
+  .pill.pc{background:var(--pill-pc-bg);color:var(--pill-pc-fg);border:1px solid var(--pill-pc-bd)}
+
+  /* Pathway / mechanism diagram */
+  .pathway{border:1px solid var(--rule-thin);background:var(--bg-soft);padding:24px 24px 20px;margin:18px 0}
+  .pw-row{display:flex;align-items:stretch;gap:0;margin-bottom:14px;flex-wrap:nowrap}
+  .pw-row:last-child{margin-bottom:0}
+  .pw-label{font-family:"IBM Plex Sans",sans-serif;font-size:10px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;width:110px;flex-shrink:0;
+    display:flex;align-items:center;padding-right:12px}
+  .pw-track{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
+  .pw-node{font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;font-weight:500;
+    padding:6px 11px;border:1px solid var(--rule-thin);background:#fff;color:var(--ink-soft);
+    white-space:nowrap;line-height:1.3}
+  .pw-node.term{background:var(--bg-deg);color:var(--accent-deep);border-color:var(--tint-accent-bd);font-weight:600}
+  .pw-node.shared{background:#fff;color:var(--ink)}
+  .pw-arr{color:var(--ink-faint);font-family:"IBM Plex Mono",monospace;font-size:13px}
+  .pw-row.lcd .pw-label{color:var(--pill-lcd-fg)}
+  .pw-row.deg .pw-label{color:var(--pill-deg-fg)}
+  .pw-converge{font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;color:var(--ink-faint);
+    margin-top:4px;padding-left:122px;font-style:italic}
+
+  /* 2×2 matrix */
+  table.m2x2{width:100%;border-collapse:collapse;font-size:13.5px;margin:16px 0}
+  table.m2x2 th,table.m2x2 td{border:1px solid var(--rule-thin);padding:16px 18px;vertical-align:middle;text-align:center;line-height:1.45}
+  table.m2x2 th.corner{background:var(--bg-soft);color:var(--ink-faint);font-family:"IBM Plex Sans",sans-serif;font-size:10px;font-weight:500}
+  table.m2x2 th.colh{background:var(--bg-soft);font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:12px;letter-spacing:.03em}
+  table.m2x2 th.rowh{background:var(--bg-soft);font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:12px;letter-spacing:.03em;width:22%;text-align:left}
+  table.m2x2 td .cell-id{font-family:"IBM Plex Sans",sans-serif;font-weight:600;color:var(--ink);font-size:13px;margin-bottom:3px;display:block}
+  table.m2x2 td .cell-cmp{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint)}
+
+  /* Venn diagram */
+  .venn-wrap{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;margin:20px 0;
+    border:1px solid var(--rule-thin);background:var(--bg-soft);padding:24px 28px}
+  .venn-leg{font-family:"IBM Plex Sans",sans-serif;font-size:13px}
+  .venn-leg .it{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+  .venn-leg .it:last-child{margin-bottom:0}
+  .venn-leg .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:4px}
+  .venn-leg .t{font-weight:600;color:var(--ink);display:block;margin-bottom:2px}
+  .venn-leg .d{color:var(--ink-soft);font-size:12.5px;line-height:1.5}
+
+  /* 4-quadrant matrix */
+  table.matrix{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+  table.matrix th,table.matrix td{border:1px solid var(--rule-thin);padding:14px 16px;vertical-align:middle;line-height:1.5}
+  table.matrix thead th{background:var(--bg-soft);font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;text-align:center;color:var(--ink)}
+  table.matrix th.corner{background:var(--bg-soft);color:var(--ink-faint);font-size:10px}
+  table.matrix th.rowh{background:var(--bg-soft);font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;text-align:left;width:24%}
+  table.matrix td .role{display:block;font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:6px}
+  table.matrix td .role.muted{color:var(--ink-faint)}
+  table.matrix td.star{background:var(--bg-deg)}
+  table.matrix td.shared-hi{background:var(--bg-shared)}
+  table.matrix td p{font-size:13px;color:var(--ink-soft);margin:0}
+
+  /* Inline equation / formal definition */
+  .def{font-family:"IBM Plex Mono",monospace;font-size:13px;background:var(--bg-soft);
+    padding:12px 16px;margin:12px 0;color:var(--ink);border-left:2px solid var(--rule-thin)}
+
+  /* Plain list */
+  ul.plain{margin:12px 0;padding-left:22px}
+  ul.plain li{margin-bottom:6px;font-size:14.5px;color:var(--ink-soft)}
+  ul.plain li strong{color:var(--ink)}
+
+  /* Callout */
+  .keypoint{border:1px solid var(--rule-thin);border-left:2px solid var(--accent);
+    padding:18px 22px;margin:20px 0;background:var(--bg-soft)}
+  .keypoint .h{font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .keypoint p{margin:0;font-size:14.5px;color:var(--ink)}
+
+  /* REVIEW ADDITION: figure frame for data charts (SVG) */
+  .fig{border:1px solid var(--rule-thin);background:#fff;padding:20px 20px 12px;margin:20px 0}
+  .fig svg{display:block;width:100%;height:auto}
+  .fig svg text{font-family:"IBM Plex Sans",sans-serif}
+
+  /* REVIEW ADDITION: vertical-spine timeline (ol.tl)
+     Geometry: year rail 68px · spine centre 82px · body from 96px.
+     li carries the milestone-type class (lcd/pc/deg) — it colours the dot. */
+  ol.tl{list-style:none;margin:24px 0 10px;padding:0}
+  ol.tl li{position:relative;padding:0 0 26px 0}
+  ol.tl li:last-child{padding-bottom:4px}
+  ol.tl .wk{position:absolute;left:0;top:2px;width:68px;text-align:right;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+    color:var(--ink);letter-spacing:-.01em}
+  ol.tl li::before{content:"";position:absolute;left:77px;top:7px;width:10px;height:10px;
+    border-radius:50%;border:2px solid var(--paper);background:var(--ink-faint);z-index:1}
+  ol.tl li.lcd::before{background:var(--pill-lcd-fg)}
+  ol.tl li.pc::before{background:var(--pill-pc-fg)}
+  ol.tl li.deg::before{background:var(--pill-deg-fg)}
+  ol.tl li::after{content:"";position:absolute;left:81px;top:20px;bottom:-2px;
+    width:2px;background:var(--rule-hair)}
+  ol.tl li:last-child::after{display:none}
+  ol.tl .tl-body{display:block;margin-left:96px;min-width:0}
+  ol.tl .tl-body h4{display:inline;font-family:"Source Serif 4",serif;font-weight:600;
+    font-size:14.5px;color:var(--ink);margin-left:9px}
+  ol.tl .tl-body p{display:block;font-family:"IBM Plex Sans",sans-serif;font-size:12px;
+    color:var(--ink-soft);line-height:1.6;margin:9px 0 0;max-width:64ch}
+
+  /* Footer */
+  footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--rule);
+    font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;color:var(--ink-faint);
+    display:flex;justify-content:space-between}
+
+  @media (max-width:680px){
+    .page{padding:40px 24px 64px}
+    .meta-grid{grid-template-columns:repeat(2,1fr)}
+    .meta-grid>div{border-left:none;padding-left:0}
+    h1.title{font-size:25px}
+    .toc ol{columns:1}
+    table.m2x2 td,table.m2x2 th{width:auto;display:block;border-right:none;border-bottom:1px solid var(--rule-hair)}
+    ol.tl .wk{position:static;display:block;text-align:left;margin-bottom:2px}
+    ol.tl .tl-body{margin-left:22px}
+    ol.tl li{padding-left:0}
+    ol.tl li::before{left:-2px}
+    ol.tl li::after{left:2px}
+    .venn-wrap{grid-template-columns:1fr}
+    .pw-row{flex-wrap:wrap}
+  }
+  @media print{
+    body{font-size:14px}
+    .print-btn{display:none}
+    .page{padding:24px 28px;max-width:100%}
+    a[href]:after{content:""}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== RUNNING HEADER ===== -->
+  <div class="runhead">
+    <span>{{Short review title · Deep Review}}</span>
+    <button class="print-btn" onclick="window.print()">{{打印 / 导出 PDF | Print / Export PDF}} ↗</button>
+  </div>
+
+  <!-- ===== TITLE BLOCK ===== -->
+  <div class="titleblock">
+    <div class="doctype">{{深度综述 | Deep Review}}</div>
+    <h1 class="title">{{Field/Topic Review Headline — specific, declarative, e.g. "Non-degradative molecular glues: mechanisms, landscape and open problems"}}</h1>
+    <p class="subtitle">{{Italic subtitle — one sentence framing scope and dual-track coverage (academic + industrial)}}</p>
+    <div class="meta-grid">
+      <div><div class="k">{{综述编号 | Review ID}}</div><div class="v">{{DR-001}}</div></div>
+      <div><div class="k">{{版本 | Version}}</div><div class="v">{{v1.0}}</div></div>
+      <div><div class="k">{{日期 | Date}}</div><div class="v">{{YYYY-MM-DD}}</div></div>
+      <div><div class="k">{{领域 | Field}}</div><div class="v">{{e.g. Chemical biology}}</div></div>
+      <div><div class="k">{{证据截止 | Evidence cutoff}}</div><div class="v">{{YYYY-MM-DD}}</div></div>
+    </div>
+  </div>
+
+  <!-- ===== ABSTRACT ===== -->
+  <div class="abstract">
+    <div class="label">{{概述 | Abstract}}</div>
+    <p>{{Paragraph 1 — what the field is, why now, scope boundaries in one sentence each.}}</p>
+    <p>{{Paragraph 2 — 3–5 headline findings with numbers, at least one per track (academic / industrial).}}</p>
+    <p>{{Evidence current as of YYYY-MM-DD.}}</p>
+  </div>
+
+  <!-- ===== TOC ===== -->
+  <nav class="toc">
+    <div class="h">{{目录 | Contents}}</div>
+    <ol>
+      <li><a href="#s1"><span class="tn">1</span>{{Scope & Definitions}}</a></li>
+      <li><a href="#s2"><span class="tn">2</span>{{Historical Timeline}}</a></li>
+      <li><a href="#s3"><span class="tn">3</span>{{Landmark Works}}</a></li>
+      <li><a href="#s4"><span class="tn">4</span>{{Mechanisms & Paradigms}}</a></li>
+      <li><a href="#s5"><span class="tn">5</span>{{Academic Landscape}}</a></li>
+      <li><a href="#s6"><span class="tn">6</span>{{Industrial Landscape}}</a></li>
+      <li><a href="#s7"><span class="tn">7</span>{{Research Fronts}}</a></li>
+      <li><a href="#s8"><span class="tn">8</span>{{Open Problems}}</a></li>
+      <li><a href="#s9"><span class="tn">9</span>{{Outlook}}</a></li>
+      <li><a href="#s10"><span class="tn">10</span>{{Methods: Search Strategy}}</a></li>
+      <li><a href="#s11"><span class="tn">11</span>{{References}}</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===== SECTION 1 — SCOPE & DEFINITIONS ===== -->
+  <section id="s1">
+    <h2 class="sec"><span class="n">1</span><span>{{Scope & Definitions}}</span></h2>
+    <hr class="sec-rule">
+    <p>{{Definition of the core concept with authoritative citations [<a href="https://pubmed.ncbi.nlm.nih.gov/PMID1/" target="_blank" rel="noopener">1</a>]. Boundary against adjacent concepts below — this drives the search NOT-blocks and every later claim.}}</p>
+
+    <!-- Example: Venn — concept vs nearest adjacent concept -->
+    <div class="venn-wrap">
+      <svg width="360" height="240" viewBox="0 0 360 240" role="img" aria-label="Scope venn diagram">
+        <circle cx="150" cy="120" r="85" style="fill:var(--v1-fill)" stroke-width="1" style="stroke:var(--v1-stroke)"/>
+        <circle cx="215" cy="120" r="85" style="fill:var(--v2-fill);stroke:var(--v2-stroke)" stroke-width="1"/>
+        <text x="95" y="60" font-size="11" font-weight="600" style="fill:var(--v1-stroke)">{{This concept}}</text>
+        <text x="245" y="60" font-size="11" font-weight="600" style="fill:var(--v2-stroke)">{{Adjacent concept}}</text>
+        <text x="182" y="122" font-size="10" style="fill:var(--ink-soft)" text-anchor="middle">{{shared ground}}</text>
+        <text x="182" y="136" font-size="9.5" style="fill:var(--ink-faint)" text-anchor="middle">{{discriminator}}</text>
+      </svg>
+      <div class="venn-leg">
+        <div class="it"><span class="dot" style="background:var(--v1-stroke)"></span><span><span class="t">{{In scope — this concept}}</span><span class="d">{{One-line definition + the single clearest discriminator.}}</span></span></div>
+        <div class="it"><span class="dot" style="background:var(--v2-stroke)"></span><span><span class="t">{{Out of scope — adjacent concept}}</span><span class="d">{{Why excluded, with citation.}}</span></span></div>
+        <div class="it"><span class="dot" style="background:var(--sand)"></span><span><span class="t">{{Shared ground}}</span><span class="d">{{What legitimately overlaps and how the report labels it.}}</span></span></div>
+      </div>
+    </div>
+
+    <p>{{Inclusion criteria: mechanism class, time window, language. Glossary here if ≥5 acronyms appear.}}</p>
+  </section>
+
+  <!-- ===== SECTION 2 — HISTORICAL TIMELINE ===== -->
+  <section id="s2">
+    <h2 class="sec"><span class="n">2</span><span>{{Historical Timeline}}</span></h2>
+    <hr class="sec-rule">
+    <p>{{5–9 milestones, each citing the primary source. Tag milestone type: <span class="pill lcd">概念 | concept</span> <span class="pill pc">工具 | tool</span> <span class="pill deg">验证 | validation</span>}}</p>
+
+    <!-- Vertical-spine timeline: one li per milestone; li class = type (lcd/pc/deg) colours the dot -->
+    <div class="table-wrap">
+      <div class="caption"><span class="tag">{{表 1. | Table 1.}}</span>{{Historical milestones}}<span class="note">{{One item per milestone; cite the primary paper, not a review's retelling.}}</span></div>
+      <ol class="tl">
+        <li class="lcd"><span class="wk">{{YYYY}}</span><span class="tl-body"><span class="pill lcd">{{concept}}</span><h4>{{Milestone title}}</h4><p>{{Why it mattered — one sentence. [<a href="https://pubmed.ncbi.nlm.nih.gov/PMID/" target="_blank" rel="noopener">n</a>]}}</p></span></li>
+        <li class="pc"><span class="wk">{{YYYY}}</span><span class="tl-body"><span class="pill pc">{{tool}}</span><h4>{{Milestone title}}</h4><p>{{Why it mattered.}}</p></span></li>
+        <li class="deg"><span class="wk">{{YYYY}}</span><span class="tl-body"><span class="pill deg">{{validation}}</span><h4>{{Milestone title}}</h4><p>{{Why it mattered.}}</p></span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3 — LANDMARK WORKS ===== -->
+  <section id="s3">
+    <h2 class="sec"><span class="n">3</span><span>{{Landmark Works}}</span></h2>
+    <hr class="sec-rule">
+    <p>{{6–15 entries selected by citation percentile within field age plus qualitative musts. Per entry: the door it opened, not a restated abstract.}}</p>
+
+    <div class="table-wrap">
+      <div class="caption"><span class="tag">{{表 2. | Table 2.}}</span>{{Landmark works}}<span class="note">{{PMIDs are clickable — click to open the record.}}</span></div>
+      <table class="bk">
+        <thead>
+          <tr>
+            <th style="width:5%">#</th>
+            <th style="width:34%">{{Work}}</th>
+            <th style="width:8%">{{Year}}</th>
+            <th style="width:12%">{{Type}}</th>
+            <th>{{Why it mattered}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lbl">1</td><td>{{Author}}. {{Title}}. {{Journal}}. <a href="https://pubmed.ncbi.nlm.nih.gov/PMID/" target="_blank" rel="noopener">PMID: XXXXXXXX ↗</a></td><td>{{YYYY}}</td><td><span class="pill a">paper</span></td><td>{{One to three sentences — the door it opened.}}</td></tr>
+          <tr><td class="lbl">2</td><td>{{Patent / registry entry when that was the inflection}} <a href="https://patents.google.com/patent/{{NUMBER}}" target="_blank" rel="noopener">{{NUMBER}} ↗</a></td><td>{{YYYY}}</td><td><span class="pill ko">patent</span></td><td>{{Why.}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 4 — MECHANISMS & PARADIGMS ===== -->
+  <section id="s4">
+    <h2 class="sec"><span class="n">4</span><span>{{Mechanisms & Paradigms}}</span></h2>
+    <hr class="sec-rule">
+    <p>{{How the core objects work; competing frameworks side by side with evidence status (established / emerging / contested). Name the experimental readouts that distinguish them.}}</p>
+
+    <!-- Example: pathway diagram -->
+    <div class="pathway">
+      <div class="pw-row lcd">
+        <div class="pw-label">{{Framework A}}</div>
+        <div class="pw-track">
+          <span class="pw-node">{{step 1}}</span><span class="pw-arr">→</span>
+          <span class="pw-node">{{step 2}}</span><span class="pw-arr">→</span>
+          <span class="pw-node shared">{{shared node}}</span><span class="pw-arr">→</span>
+          <span class="pw-node term">{{observable outcome}}</span>
+        </div>
+      </div>
+      <div class="pw-row deg">
+        <div class="pw-label">{{Framework B}}</div>
+        <div class="pw-track">
+          <span class="pw-node">{{step 1}}</span><span class="pw-arr">→</span>
+          <span class="pw-node shared">{{shared node}}</span><span class="pw-arr">→</span>
+          <span class="pw-node term">{{observable outcome}}</span>
+        </div>
+      </div>
+      <div class="pw-converge">{{Where they converge; the readout that tells them apart [<a href="https://pubmed.ncbi.nlm.nih.gov/PMID/" target="_blank" rel="noopener">n</a>].}}</div>
+    </div>
+
+    <!-- Optional: formal definition box -->
+    <div class="def">{{formal definition / quantitative criterion, monospace}}</div>
+  </section>
+
+  <!-- ===== SECTION 5 — ACADEMIC LANDSCAPE ===== -->
+  <section id="s5">
+    <h2 class="sec"><span class="n">5</span><span>{{Academic Landscape}}</span></h2>
+    <hr class="sec-rule">
+    <h3 class="sub"><span class="n">5.1</span>{{Who and what toolkit}}</h3>
+    <p>{{5–12 leading groups ordered by contribution; assays / databases / computational methods with canonical citations.}}</p>
+
+    <h3 class="sub"><span class="n">5.2</span>{{Activity trend}}</h3>
+    <p>{{One paragraph interpreting the chart — what inflected, when, and what the query behind the numbers was (details in §10).}}</p>
+
+    <!-- Publication-trend chart: REAL OpenAlex counts only, CONTINUOUS annual axis
+         (no 5-year subsampling at uniform pitch — that distorts the curve). -->
+    <div class="fig">
+      <div class="caption"><span class="tag">{{图 1. | Fig. 1.}}</span>{{Publications per year matching the scope query}}<span class="note">{{Data: OpenAlex <span class="mono">filter=title_and_abstract.search:"{{query}}"</span>, accessed YYYY-MM-DD.}}</span></div>
+      <svg viewBox="0 0 840 240" role="img" aria-label="Publication trend bar chart">
+        <line x1="60" y1="20" x2="60" y2="200" stroke="#c9ccd1" stroke-width="1"/>
+        <line x1="60" y1="200" x2="820" y2="200" stroke="#15171a" stroke-width="1"/>
+        <text x="52" y="204" font-size="10" fill="#6b7079" text-anchor="end">0</text>
+        <text x="52" y="24" font-size="10" fill="#6b7079" text-anchor="end">{{max}}</text>
+        <!-- one bar per year, evenly spaced; value labels only where they do not collide -->
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 6 — INDUSTRIAL LANDSCAPE ===== -->
+  <section id="s6">
+    <h2 class="sec"><span class="n">6</span><span>{{Industrial Landscape}}</span></h2>
+    <hr class="sec-rule">
+    <p>{{Companies / programs / deals / IP posture. Stage pills: <span class="pill pc">discovery/preclinical</span> <span class="pill a">Ph I</span> <span class="pill ko">Ph II</span> <span class="pill deg">Ph III / approved</span> — registry-verified where a trial exists; two-source rule on every volatile number.}}</p>
+
+    <div class="table-wrap">
+      <div class="caption"><span class="tag">{{表 3. | Table 3.}}</span>{{Pipeline landscape}}<span class="note">{{Stage = registry status where available (ClinicalTrials.gov, accessed YYYY-MM-DD); "per company disclosure" where not. Source + access date in every row.}}</span></div>
+      <table class="bk">
+        <thead>
+          <tr>
+            <th style="width:14%">{{Company}}</th>
+            <th style="width:16%">{{Program}}</th>
+            <th style="width:20%">{{Target / modality}}</th>
+            <th style="width:10%">{{Stage}}</th>
+            <th style="width:14%">{{Indication}}</th>
+            <th>{{Source}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lbl">{{Company}}</td><td>{{code name}}</td><td>{{mechanism-level, not marketing}}</td><td><span class="pill a">Ph I</span></td><td>{{indication}}</td><td>NCT{{…}}, accessed {{date}}</td></tr>
+          <tr><td class="lbl">{{Company}}</td><td>{{program}}</td><td>{{target}}</td><td><span class="pill pc">preclinical</span></td><td>{{—}}</td><td>company disclosure, accessed {{date}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub"><span class="n">6.1</span>{{Deals & financing}}</h3>
+    <p>{{Partnerships, M&A, rounds — value, date, parties, source; two-source rule on values.}}</p>
+
+    <h3 class="sub"><span class="n">6.2</span>{{IP posture}}</h3>
+    <p>{{Patent families and who controls foundational IP — facts only, no legal opinions.}}</p>
+  </section>
+
+  <!-- ===== SECTION 7 — RESEARCH FRONTS ===== -->
+  <section id="s7">
+    <h2 class="sec"><span class="n">7</span><span>{{Research Fronts}}</span></h2>
+    <hr class="sec-rule">
+    <ul class="plain">
+      <li><strong>{{Front 1 (last 2–3 y).}}</strong> {{What's new, who drives it (labs and/or companies), 2–4 recent linked references [<a href="https://pubmed.ncbi.nlm.nih.gov/PMID/" target="_blank" rel="noopener">n</a>], honest momentum evidence. Preprints flagged.}}</li>
+      <li><strong>{{Front 2.}}</strong> {{…}}</li>
+      <li><strong>{{Front 3.}}</strong> {{…}}</li>
+    </ul>
+  </section>
+
+  <!-- ===== SECTION 8 — OPEN PROBLEMS ===== -->
+  <section id="s8">
+    <h2 class="sec"><span class="n">8</span><span>{{Open Problems}}</span></h2>
+    <hr class="sec-rule">
+    <p>{{5–10 problems: statement, why it matters (rate-limiting for what), current best attempt + limitation. Ranked below by importance × tractability — the TOP-LEFT quadrant (field-defining × tractable) is the field's highest-value near-term work.}}</p>
+
+    <div class="table-wrap figblock">
+      <table class="m2x2">
+        <tr>
+          <th class="corner"></th>
+          <th class="colh">{{Tractable — near-term solvable}}</th>
+          <th class="colh">{{Needs breakthrough}}</th>
+        </tr>
+        <tr>
+          <th class="rowh">{{Field-defining importance}}</th>
+          <td class="star"><span class="cell-id">{{Priority quadrant}}</span><span class="cell-cmp">{{P1 · P2}}</span></td>
+          <td><span class="cell-id">{{Long bets}}</span><span class="cell-cmp">{{P3}}</span></td>
+        </tr>
+        <tr>
+          <th class="rowh">{{Incremental}}</th>
+          <td><span class="cell-id">{{Quick wins}}</span><span class="cell-cmp">{{P4}}</span></td>
+          <td><span class="cell-id">{{Parking lot}}</span><span class="cell-cmp">{{P5}}</span></td>
+        </tr>
+      </table>
+      <div class="caption"><span class="tag">{{图 2. | Fig. 2.}}</span>{{Open problems ranked by importance × tractability}}<span class="note">{{This report's assessment — argument in the prose above, not a consensus claim.}}</span></div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 9 — OUTLOOK ===== -->
+  <section id="s9">
+    <h2 class="sec"><span class="n">9</span><span>{{Outlook}}</span></h2>
+    <hr class="sec-rule">
+    <h3 class="sub"><span class="n">9.1</span>{{For academic readers}}</h3>
+    <p>{{What to work on, which problems unlock others; 3–5 year horizon.}}</p>
+    <div class="keypoint">
+      <div class="h">{{Academic takeaway}}</div>
+      <p>{{One load-bearing sentence.}}</p>
+    </div>
+    <h3 class="sub"><span class="n">9.2</span>{{For industrial readers}}</h3>
+    <p>{{Where the white space is; which claims are over-hyped.}}</p>
+    <div class="keypoint">
+      <div class="h">{{Industrial takeaway}}</div>
+      <p>{{One load-bearing sentence.}}</p>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 10 — METHODS: SEARCH STRATEGY ===== -->
+  <section id="s10">
+    <h2 class="sec"><span class="n">10</span><span>{{Methods: Search Strategy}}</span></h2>
+    <hr class="sec-rule">
+    <p>{{PRISMA-lite: identified {{N}} → after dedup {{N}} → core corpus {{N}} → cited here {{N}}. Declared limitations: language bias, cutoff date, databases not searched, single-source facts.}}</p>
+
+    <div class="table-wrap">
+      <div class="caption"><span class="tag">{{表 4. | Table 4.}}</span>{{Searches run}}<span class="note">{{Query strings verbatim — reproducible as-is.}}</span></div>
+      <table class="bk">
+        <thead>
+          <tr>
+            <th style="width:16%">{{Database}}</th>
+            <th>{{Query}}</th>
+            <th style="width:12%">{{Run date}}</th>
+            <th style="width:10%">{{Results}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lbl">PubMed</td><td><span class="mono">{{verbatim query string}}</span></td><td>{{YYYY-MM-DD}}</td><td>{{N}}</td></tr>
+          <tr><td class="lbl">OpenAlex</td><td><span class="mono">{{verbatim filter}}</span></td><td>{{YYYY-MM-DD}}</td><td>{{N}}</td></tr>
+          <tr><td class="lbl">ClinicalTrials.gov</td><td><span class="mono">{{query.intr=…}}</span></td><td>{{YYYY-MM-DD}}</td><td>{{N}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 11 — REFERENCES ===== -->
+  <section id="s11">
+    <h2 class="sec"><span class="n">11</span><span>References</span></h2>
+    <hr class="sec-rule">
+    <p>{{In-text citations are single anchors per number, each opening the source record directly: [<a href="https://pubmed.ncbi.nlm.nih.gov/20159315/" target="_blank" rel="noopener">1</a>] and [<a href="https://pubmed.ncbi.nlm.nih.gov/21881205/" target="_blank" rel="noopener">2</a>],[<a href="https://pubmed.ncbi.nlm.nih.gov/21852578/" target="_blank" rel="noopener">3</a>].}}</p>
+
+    <div class="table-wrap">
+      <div class="caption"><span class="tag">{{表 5. | Table 5.}}</span>References (click a PMID to open the record)<span class="note">{{Vancouver/Nature style; every PMID verified before delivery. The # column stays narrow — it is an index, not content.}}</span></div>
+      <table class="bk">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Citation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lbl">1</td><td>{{Author}} {{Title}}. {{Journal}}. {{Year}};{{Vol}}:{{Pages}}. <a href="https://pubmed.ncbi.nlm.nih.gov/20159315/" target="_blank" rel="noopener">PMID: 20159315 ↗</a></td></tr>
+          <tr><td class="lbl">2</td><td>{{Author}} {{Title}}. {{Journal}}. {{Year}};{{Vol}}:{{Pages}}. <a href="https://pubmed.ncbi.nlm.nih.gov/21881205/" target="_blank" rel="noopener">PMID: 21881205 ↗</a></td></tr>
+          <tr><td class="lbl">3</td><td>{{Author}} {{Title}}. {{Journal}}. {{Year}};{{Vol}}:{{Pages}}. <a href="https://doi.org/10.xxxx/xxxxx" target="_blank" rel="noopener">doi:10.xxxx/xxxxx ↗</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <span>{{DR-001 · v1.0 · YYYY-MM-DD}}</span>
+    <span>{{中文版 | English}}</span>
+  </footer>
+
+</div>
+</body>
+</html>
