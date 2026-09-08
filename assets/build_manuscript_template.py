@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build manuscript_template.docx for the deep-review skill.
 
-Journal-manuscript style: A4, 2.5 cm margins, monochrome, Times New Roman 12 pt
-(SimSun for CJK), double-spaced body, numbered sections, hanging-indent
+Journal-manuscript style: A4, 2.5 cm margins, monochrome, Arial throughout
+(12 pt double-spaced body; 9 pt tables; SimSun only as the CJK fallback), numbered sections, hanging-indent
 references. Regenerate with:  python3 build_manuscript_template.py
 """
 from docx import Document
@@ -23,7 +23,7 @@ def set_cjk(style_or_run, cjk_font="SimSun"):
         rpr.append(rfonts)
     rfonts.set(qn("w:eastAsia"), cjk_font)
 
-def style_font(st, name="Times New Roman", size=12, bold=False, italic=False):
+def style_font(st, name="Arial", size=12, bold=False, italic=False):
     st.font.name = name
     st.font.size = Pt(size)
     st.font.bold = bold
