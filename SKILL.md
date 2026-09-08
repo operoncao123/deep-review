@@ -130,7 +130,7 @@ The report must read as professional academic writing, not as machine-generated 
 * **Update mode:** point at an existing `deep_review_<topic>_*/` workspace; refresh the industry track and academic track for the period since the old evidence cutoff; keep stable reference numbering where possible; bump version (v1.0 → v1.1) **in the build script's constants block only** — tokens propagate it everywhere.
 * **Quick pass:** halve minimums (≥ 10 refs, ≥ 4 industry entries), compress skeleton to Scope / Timeline / Landscape / Open Problems — state "quick pass" in the report header.
 * **Non-biomed topics:** industry track becomes practitioner/commercial landscape via general web sources; registry/patent tools simply don't fire.
-* **Different accent (HTML only):** pick a palette panel via `DEEPREVIEW_PANEL` (`assets/palettes.py`: nature / nejm / lancet / science / jama; paper tint, pills, figure fills and the venn duo derive automatically — no hardcoded hexes in figures) or add a row to `_HUES`. The shipped switcher widget lets readers flip panels live; styles go in `<head>`, the widget div right after `<body>` (never inside `<head>`), label localized to the document language.
+* **Different accent (HTML only):** pick a palette panel via `DEEPREVIEW_PANEL` (`assets/palettes.py`: nature / nejm / lancet / science / jama; paper tint, pills, figure fills and the venn duo derive automatically — no hardcoded hexes in figures) or add a row to `_HUES`. The canonical live switcher (`palettes.switcher_html()`: label + 2×5 deepened-swatch grid, choice persisted in localStorage) ships with every report; styles go in `<head>`, the widget div right after `<body>` (never inside `<head>`), label localized to the document language.
 
 ## Resources
 

@@ -114,6 +114,65 @@ def js_panels() -> str:
                      **{k: p[k] for k in p if k not in ("name", "label")}}
     return json.dumps(out, ensure_ascii=False)
 
+# ---------------- live panel switcher (canonical, shipped with reports) ----------------
+# Layout: label + 2 rows x 5 swatches. Swatch colour = panel accent deepened
+# (SWATCH_K): the raw accent read too light at dot size, per user feedback.
+SWATCH_K = 0.88
+
+SWITCHER_CSS = """
+  /* live palette switcher: label + 2x5 swatch grid; deeper swatches */
+  .dr-switch{position:fixed;right:18px;bottom:16px;z-index:60;display:flex;align-items:center;
+    gap:12px;background:var(--paper);border:1px solid var(--rule-hair);border-radius:14px;
+    padding:8px 12px;box-shadow:0 1px 6px rgba(0,0,0,.07);
+    font-family:"IBM Plex Sans","Noto Sans SC",sans-serif}
+  .dr-switch .dr-cap{font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint)}
+  .dr-switch .dr-dots{display:grid;grid-template-columns:repeat(5,14px);gap:7px 10px}
+  .dr-switch button{width:14px;height:14px;border-radius:50%;cursor:pointer;padding:0;
+    border:1.5px solid var(--paper);outline:1px solid var(--rule-thin);transition:transform .12s}
+  .dr-switch button:hover{transform:scale(1.25)}
+  .dr-switch button.on{outline:2px solid var(--ink);outline-offset:1.5px}
+  @media print{.dr-switch{display:none}}
+"""
+
+def swatch(name: str, k: float = SWATCH_K) -> str:
+    """Switcher dot colour: panel accent deepened toward ink (k < 1 = darker)."""
+    return _deep(PANELS[name]["accent"], k)
+
+def switcher_html(lang: str = "en", active=None) -> str:
+    """Self-contained panel switcher: HTML + CSS + JS (setProperty wins over any
+    shipped :root block; persists the choice in localStorage)."""
+    import json
+    active = active or ACTIVE
+    cap = "配色面板" if lang == "zh" else "Panel"
+    aria = "配色面板切换" if lang == "zh" else "Colour panel switcher"
+    dots = "".join(
+        f'<button class="{"on" if n == active else ""}" data-panel="{n}" '
+        f'style="background:{swatch(n)}" title="{PANELS[n]["label"]}" '
+        f'aria-label="{PANELS[n]["label"]}" aria-pressed="{"true" if n == active else "false"}">'
+        f'</button>'
+        for n in PANELS)
+    return (
+        f'<style>{SWITCHER_CSS}</style>'
+        f'<div class="dr-switch" role="group" aria-label="{aria}">'
+        f'<span class="dr-cap">{cap}</span>'
+        f'<span class="dr-dots">{dots}</span></div>'
+        f'<script>(function(){{'
+        f'var PANELS={js_panels()};'
+        f'var root=document.documentElement;'
+        f'function apply(k){{var p=PANELS[k];'
+        f'for(var key in p){{if(key==="label")continue;'
+        f'root.style.setProperty("--"+key,p[key]);}}'
+        f'document.querySelectorAll(".dr-switch button").forEach(function(d){{'
+        f'var on=d.dataset.panel===k;d.classList.toggle("on",on);'
+        f'd.setAttribute("aria-pressed",on?"true":"false");}});'
+        f'try{{localStorage.setItem("dr-panel",k);}}catch(e){{}}}}'
+        f'var saved=null;try{{saved=localStorage.getItem("dr-panel");}}catch(e){{}}'
+        f'document.querySelectorAll(".dr-switch button").forEach(function(d){{'
+        f'if(saved&&PANELS[d.dataset.panel]){{apply(saved);}}'
+        f'd.addEventListener("click",function(){{apply(d.dataset.panel);}});}});'
+        f'}})();</script>')
+
 if __name__ == "__main__":
     for name, p in PANELS.items():
         print(f"{name:8s} {p['label']}: accent={p['accent']} sea={p['sea']} warm={p['warm']}")
